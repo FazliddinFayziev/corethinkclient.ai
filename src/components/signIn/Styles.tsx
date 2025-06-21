@@ -1,0 +1,82 @@
+import { FONTS } from "../../styles/GlobalStyles";
+
+export const styles = {
+    signinContainer: {
+        width: '100%',
+        px: 4,
+        py: 2,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 10,
+        fontFamily: FONTS.primary,
+    },
+    logo: {
+        color: '#fff',
+        fontWeight: 400,
+        textDecoration: 'none',
+        fontFamily: FONTS.primary,
+    },
+    mainSection: {
+        minHeight: '100vh',
+        px: { xs: 3, sm: 6 },
+        py: { xs: 10, sm: 12 },
+        pt: 14,
+        backgroundColor: '#0a0a0a',
+        color: '#fff',
+        fontFamily: FONTS.primary,
+        backgroundImage: `
+      radial-gradient(#444 1px, transparent 1px),
+      linear-gradient(135deg, #0a0a0a, #351f75)
+    `,
+        backgroundSize: '20px 20px, 100% 100%',
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: { xs: 8, md: 12 },
+        textAlign: { xs: 'center', md: 'left' },
+    },
+    leftContainer: { maxWidth: 500 },
+    leftTypoOne: {
+        fontWeight: 'bold',
+        mb: 1,
+        fontSize: { xs: '2.5rem', sm: '3rem' },
+        letterSpacing: -1,
+        fontFamily: FONTS.primary,
+    },
+    leftTypoTwo: {
+        color: '#b388ff',
+        mb: 4,
+        fontWeight: 500,
+        fontSize: { xs: '2rem', sm: '2.5rem' },
+        fontFamily: FONTS.primary,
+    },
+    button: {
+        color: '#fff',
+        borderColor: '#fff',
+        textTransform: 'none',
+        borderRadius: '12px',
+        fontSize: '1rem',
+        fontFamily: FONTS.primary,
+        py: 1.5,
+        transition: 'all 0.3s ease',
+        '&:hover': {
+            borderColor: '#b388ff',
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+        },
+    },
+    caption: {
+        color: '#bbb',
+        mt: 1,
+        textAlign: 'center',
+        fontSize: '0.80rem',
+        lineHeight: 1.5,
+        fontFamily: FONTS.primary,
+    },
+    contexts: {
+        fontSize: { xs: '1.2rem', sm: '1.5rem' },
+        lineHeight: 1.8,
+        fontFamily: FONTS.primary,
+    },
+};
