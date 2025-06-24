@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 import { getStyles } from './Styles';
 import { Link } from 'react-router-dom';
-import darkLogo from '../assets/darkLogo.png';
-import lightLogo from '../assets/lightLogo.png';
+import darkLogo from '../assets/dark_corethink.png';
+import lightLogo from '../assets/light_corethink.png';
 import { useGlobalContext } from '../../context/context';
 
 interface SingleTabProps {
@@ -53,11 +53,11 @@ const NavTab: React.FC<NavTabProps> & { SingleTab: React.FC<SingleTabProps> } = 
             src={mode ? lightLogo : darkLogo}
             alt="CoreThink logo"
             sx={{
-              height: 80,
+              height: { xs: 80, sm: 100, md: 120 },
               width: 'auto',
-              mr: 2,
               display: 'block',
               cursor: 'pointer',
+              mt: 1
             }}
           />
         </Link>
@@ -90,8 +90,8 @@ const NavTab: React.FC<NavTabProps> & { SingleTab: React.FC<SingleTabProps> } = 
 
         {/* Mobile Nav */}
         <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-          <IconButton 
-            onClick={() => setDrawerOpen(true)} 
+          <IconButton
+            onClick={() => setDrawerOpen(true)}
             sx={styles.menuIcon}
           >
             <MenuIcon />

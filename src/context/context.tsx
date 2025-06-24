@@ -1,4 +1,4 @@
-  import React, { useContext, useState, type ReactNode } from 'react';
+import React, { useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface AppContextProps {
     mode: boolean; 
@@ -12,7 +12,17 @@ interface AppProviderProps {
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
-    const [mode, setMode] = useState<boolean>(false);
+    const [mode, setMode] = useState<boolean>(() => {
+        if (typeof window !== 'undefined') {
+            const savedMode = localStorage.getItem('mode');
+            return savedMode ? JSON.parse(savedMode) : false;
+        }
+        return false;
+    });
+
+    useEffect(() => {
+        localStorage.setItem('mode', JSON.stringify(mode));
+    }, [mode]);
 
     return (
         <AppContext.Provider value={{ mode, setMode }}>

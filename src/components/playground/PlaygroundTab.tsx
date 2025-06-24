@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ChatDisplay from './ChatDisplay';
 import MessageInput from './MessageInput';
-import { Box, Stack, useMediaQuery, useTheme } from '@mui/material';
+import ApiViewModal from './ApiViewModal';
 import type { Message } from './type/type';
+import SettingsModal from './SettingsModal';
 import SettingsPanel from './SettingsPanel';
 import PlaygroundHeader from './PlaygroundHeader';
 import SystemPromptInput from './SystemPromptInput';
-import ApiViewModal from './ApiViewModal';
-import SettingsModal from './SettingsModal';
+import { Box, Stack, useMediaQuery, useTheme } from '@mui/material';
 
 const dummyReplies = [
   "Let me check that for you.",
@@ -23,11 +23,11 @@ const PlaygroundTab: React.FC = () => {
   const [safety, setSafety] = useState('None');
   const [expanded, setExpanded] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [openSettings, setOpenSettings] = useState(false);
   const [temperature, setTemperature] = useState(0.7);
   const [outputLength, setOutputLength] = useState(50);
   const [systemPrompt, setSystemPrompt] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [openSettings, setOpenSettings] = useState(false);
   const [respondLoading, setRespondLoading] = useState(false);
   const [model, setModel] = useState('deepseek-ai/DeepSeek-R1');
 
@@ -37,6 +37,36 @@ const PlaygroundTab: React.FC = () => {
   const toggleModal = () => setOpenModal(!openModal);
   const toggleSettings = () => setOpenSettings(!openSettings);
   const toggleExpand = () => setExpanded((prev) => !prev);
+
+  // SEND SUGGESTION
+
+  const handleSendSuggestions = (suggestion:string) => {
+    const userMessage: Message = { sender: 'user', message: suggestion };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    setMessage('');
+    setRespondLoading(true);
+
+    setTimeout(() => {
+      const botReply: Message = {
+        sender: 'bot',
+        message: dummyReplies[Math.floor(Math.random() * dummyReplies.length)],
+      };
+
+      setMessages((prev) => [...prev, botReply]);
+      setRespondLoading(false);
+    }, 1500);
+
+    console.log('--- Sending Message ---');
+    console.log('System Prompt:', systemPrompt);
+    console.log('Model:', model);
+    console.log('Safety:', safety);
+    console.log('Temperature:', temperature);
+    console.log('Output Length:', outputLength);
+    console.log('Messages:', updatedMessages);
+  }
+
+  // SEND MESSAGE
 
   const handleSend = () => {
     if (!message.trim()) return;
@@ -90,7 +120,13 @@ const PlaygroundTab: React.FC = () => {
               setSystemPrompt={setSystemPrompt}
             />
             <ChatDisplay messages={messages} respondLoading={respondLoading} />
-            <MessageInput message={message} setMessage={setMessage} onSend={handleSend} />
+            <MessageInput 
+              message={message} 
+              messages={messages}
+              onSend={handleSend} 
+              setMessage={setMessage} 
+              onSendSuggestion={handleSendSuggestions}
+            />
           </Stack>
 
           {/* Show settings panel only on larger screens */}

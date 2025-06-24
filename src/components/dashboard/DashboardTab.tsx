@@ -90,7 +90,7 @@ const DashboardTab: React.FC = () => {
                         <Typography variant="body2" sx={styles(mode).cardTwoText}>
                             Your current balance is
                         </Typography>
-                        <Typography variant="h3" sx={styles(mode).priceS}>
+                        <Typography variant="h5" sx={styles(mode).priceS}>
                             $100.00
                         </Typography>
                         <Typography variant="caption" sx={styles(mode).remainS}>

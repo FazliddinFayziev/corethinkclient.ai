@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { DashboardStyles } from './Styles';
 import { useGlobalContext } from '../../context/context';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { DashboardTab, NavTab, PlaygroundTab, SingleTab } from '../../components';
+import { CompareTab, DashboardTab, NavTab, PlaygroundTab, SingleTab } from '../../components';
 
 
 const Dashboard: React.FC = () => {
@@ -32,13 +32,7 @@ const Dashboard: React.FC = () => {
       <NavTab>
         <SingleTab path="Dashboard" component={<DashboardTab />} />
         <SingleTab path="Playground" component={<PlaygroundTab />} />
-        <SingleTab path="Compare" component={
-          <>
-            <Typography sx={{ fontFamily: 'Faustina, sans-serif' }}>
-              There will be Compare section!
-            </Typography>
-          </>
-        } />
+        <SingleTab path="Compare" component={<CompareTab />} />
       </NavTab>
     </Box>
   );

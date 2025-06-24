@@ -228,7 +228,7 @@ export const styles = (mode: boolean) => {
             height: '100%',
             textAlign: 'center',
             color: COLORS.textMuted,
-            fontWeight: 300,
+            fontStyle: 'italic',
             fontSize: { xs: '1rem', sm: '1.1rem' },
             px: { xs: 1, sm: 2 },
         },
@@ -367,8 +367,9 @@ export const styles = (mode: boolean) => {
         },
 
         suggestionCardContext: { 
-            fontWeight: 300,
+            fontWeight: 500,
             color: mode ? '#E2E8F0' : '#2D3748',
+            fontFamily: 'Faustina, sans-serif',
             lineHeight: 1.25,
             fontSize: '0.85rem',
             textOverflow: 'ellipsis',
@@ -377,7 +378,6 @@ export const styles = (mode: boolean) => {
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             textAlign: "center",
-            fontFamily: FONTS.primary,
         },
 
         // ====================================== MODAL-API-VIEW ================================================>

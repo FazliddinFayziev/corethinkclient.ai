@@ -6,11 +6,15 @@ export { default as SignIn } from "./signIn/SignIn";
 // ================================= LANDING PAGE =============================================>
 
 export { default as HeroBanner } from "./heroBanner/HeroBanner";
+export { default as Company } from "./company/Company";
 export { default as UseCases } from "./useCases/UseCases";
+export { default as Footer } from "./footer/Footer";
+export { default as Benchmark } from "./benchmark/Benchmark";
 
 // ========================== TABS (MAIN DASHBOARD SECTION) ===================================>
 
 export { default as NavTab } from "./navTab/NavTab";
 export { default as SingleTab } from "./dashboard/SingleTag";
+export { default as CompareTab } from "./compare/CompareTab";
 export { default as DashboardTab } from "./dashboard/DashboardTab";
 export { default as PlaygroundTab } from "./playground/PlaygroundTab";

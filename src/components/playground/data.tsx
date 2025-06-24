@@ -51,3 +51,27 @@ curl https://api.corethink.ai/v1/chat/completions \\
     `,
   },
 ];
+
+
+export const SUGGESTED_PROMPTS = [
+  "Quantum entanglement explained",
+  "AI's impact on philosophy",
+  "Gödel's incompleteness theorems",
+  "Kant vs Nietzsche on morality",
+  "Blockchain for beginners",
+  "Future of consciousness studies",
+  "Bayesian reasoning basics",
+  "Hard problem of consciousness",
+  "Eastern vs Western logic",
+  "Elegance in mathematical proofs",
+  "Chinese Room argument",
+  "Causality vs correlation",
+  "The trolley problem",
+  "Emergence in complex systems",
+  "Potential alien mathematics",
+  "Computational theory of mind",
+  "Simulation hypothesis",
+  "Fermi paradox explained",
+  "Game theory in AI",
+  "Understanding qualia"
+];

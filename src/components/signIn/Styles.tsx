@@ -1,6 +1,6 @@
 import { FONTS } from "../../styles/GlobalStyles";
 
-export const styles = {
+export const styles = (mode: boolean) => ({
     signinContainer: {
         width: '100%',
         px: 4,
@@ -10,9 +10,10 @@ export const styles = {
         left: 0,
         zIndex: 10,
         fontFamily: FONTS.primary,
+        backgroundColor: 'transparent',
     },
     logo: {
-        color: '#fff',
+        color: mode ? '#fff' : '#0a0a0a',
         fontWeight: 400,
         textDecoration: 'none',
         fontFamily: FONTS.primary,
@@ -22,13 +23,11 @@ export const styles = {
         px: { xs: 3, sm: 6 },
         py: { xs: 10, sm: 12 },
         pt: 14,
-        backgroundColor: '#0a0a0a',
-        color: '#fff',
-        fontFamily: FONTS.primary,
-        backgroundImage: `
-      radial-gradient(#444 1px, transparent 1px),
-      linear-gradient(135deg, #0a0a0a, #351f75)
-    `,
+        backgroundColor: mode ? '#0A0C21' : '#F9F9FF',
+        color: mode ? '#fff' : '#111',
+        backgroundImage: mode
+          ? 'radial-gradient(#1a1d40 1px, transparent 1px)'
+          : 'radial-gradient(#e5e5ff 1px, transparent 1px)',
         backgroundSize: '20px 20px, 100% 100%',
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
@@ -44,17 +43,18 @@ export const styles = {
         fontSize: { xs: '2.5rem', sm: '3rem' },
         letterSpacing: -1,
         fontFamily: FONTS.primary,
+        color: mode ? '#fff' : '#0a0a0a',
     },
     leftTypoTwo: {
-        color: '#b388ff',
+        color: mode ? '#b388ff' : '#7b4fff',
         mb: 4,
         fontWeight: 500,
         fontSize: { xs: '2rem', sm: '2.5rem' },
         fontFamily: FONTS.primary,
     },
     button: {
-        color: '#fff',
-        borderColor: '#fff',
+        color: mode ? '#fff' : '#0a0a0a',
+        borderColor: mode ? '#fff' : '#0a0a0a',
         textTransform: 'none',
         borderRadius: '12px',
         fontSize: '1rem',
@@ -62,12 +62,12 @@ export const styles = {
         py: 1.5,
         transition: 'all 0.3s ease',
         '&:hover': {
-            borderColor: '#b388ff',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+            borderColor: mode ? '#b388ff' : '#7b4fff',
+            backgroundColor: mode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
         },
     },
     caption: {
-        color: '#bbb',
+        color: mode ? '#bbb' : '#666',
         mt: 1,
         textAlign: 'center',
         fontSize: '0.80rem',
@@ -75,8 +75,9 @@ export const styles = {
         fontFamily: FONTS.primary,
     },
     contexts: {
-        fontSize: { xs: '1.2rem', sm: '1.5rem' },
+        fontSize: { xs: '1rem', sm: '1.2rem' },
         lineHeight: 1.8,
         fontFamily: FONTS.primary,
+        color: mode ? '#fff' : '#0a0a0a',
     },
-};
+});
