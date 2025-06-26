@@ -1,11 +1,12 @@
 import {
-  MedicalServices,
-  AccountBalance,
   Gavel,
-  Factory,
   Store,
+  Factory,
+  Security,
+  Computer,
   FlightTakeoff,
-  Security
+  AccountBalance,
+  MedicalServices,
 } from '@mui/icons-material';
 
 // Healthcare & Life Sciences
@@ -42,6 +43,11 @@ import uncertain_routing from "./assets/Uncertain Routing.jpg";
 import red_team from "./assets/Red Team Simulation.jpg";
 import vulnerability from "./assets/Vulnerability Triage.jpg";
 import multi_agent from "./assets/Multi-Agent Debugging.jpg";
+
+// IT
+import code_generation from "./assets/Code Generation & Refactoring.jpg";
+import ai_agents from "./assets/AI Agent Orchestration.jpg";
+import iac_validation from "./assets/Infrastructure as Code Validation.jpg";
 
 export const useCaseData = [
   {
@@ -190,5 +196,26 @@ export const useCaseData = [
         image: multi_agent,
       }
     ]
-  }
+  },
+  {
+  category: 'IT',
+  icon: <Computer fontSize="small" />, 
+  cases: [
+    {
+      title: 'Code Generation & Refactoring',
+      desc: 'Automatically generate boilerplate code or refactor existing codebases with AI assistance.',
+      image: code_generation,
+    },
+    {
+      title: 'AI Agent Orchestration',
+      desc: 'Coordinate multiple AI agents to complete complex technical workflows autonomously.',
+      image: ai_agents, 
+    },
+    {
+      title: 'Infrastructure as Code Validation',
+      desc: 'Analyze and validate Terraform/CloudFormation templates for security and efficiency.',
+      image: iac_validation, 
+    }
+  ]
+}
 ];

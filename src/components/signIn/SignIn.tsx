@@ -14,7 +14,7 @@ const SignIn: React.FC = () => {
   return (
     <>
       <Box sx={styles(mode).signinContainer}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+        <Link to="/">
           <Box
             component="img"
             src={mode ? lightLogo : darkLogo}
@@ -35,7 +35,7 @@ const SignIn: React.FC = () => {
         {/* Left Content */}
         <Box sx={styles(mode).leftContainer}>
           <Typography variant="h1" sx={styles(mode).leftTypoOne}>
-            corethink.
+            corethink.ai
           </Typography>
           <Typography variant="h1" sx={styles(mode).leftTypoTwo}>
             sign in
@@ -47,10 +47,10 @@ const SignIn: React.FC = () => {
                 {text}
                 <Box component="span" sx={{ color: mode ? '#a78bfa' : '#7b4fff' }}>
                   {idx === 0
-                    ? 'all leading LLMs'
+                    ? 'Better'
                     : idx === 1
-                      ? 'data, domain, and users'
-                      : 'scalable AI applications'}
+                      ? 'Prompt to Proof'
+                      : 'AI Starts Here'}
                 </Box>
               </Typography>
             ))}
