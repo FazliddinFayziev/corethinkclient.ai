@@ -8,12 +8,13 @@ import {
   Typography,
   Divider,
   useTheme,
-  useMediaQuery,
   Avatar,
+  useMediaQuery,
   Menu,
   MenuItem,
   CircularProgress
 } from '@mui/material';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import MenuIcon from '@mui/icons-material/Menu';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -22,6 +23,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../../context/context';
 import { FONTS } from '../../styles/GlobalStyles';
+import Profile from '../profile/Profile';
 
 export interface SidebarItem {
   path: string;
@@ -89,6 +91,25 @@ const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
   useEffect(() => {
     if (!navTabs || navTabs.length === 0) return;
 
+    // Check if we're on the profile page
+    if (location.pathname.startsWith('/main/profile')) {
+      const profileNav = {
+        name: 'Profile',
+        path: '/main/profile',
+        sidebarItems: [
+          {
+            path: '/main/profile',
+            label: 'Your Profile',
+            icon: <PermIdentityIcon />,
+            component: <Profile />
+          }
+        ]
+      };
+      setCurrentNav(profileNav);
+      setCurrentSidebarItem(profileNav.sidebarItems[0]);
+      return;
+    }
+
     const matchedNav = navTabs.find(nav => location.pathname.startsWith(nav.path)) || navTabs[0];
     const matchedSidebarItem = matchedNav?.sidebarItems?.find(item => 
       location.pathname.startsWith(item.path)
@@ -128,7 +149,7 @@ const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
   };
 
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate('/main/profile');
     handleProfileMenuClose();
   };
 
