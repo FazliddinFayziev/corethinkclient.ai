@@ -3,9 +3,26 @@ import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { DashboardStyles } from './Styles';
 import { useGlobalContext } from '../../context/context';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CompareTab, DashboardTab, NavTab, PlaygroundTab, SingleTab } from '../../components';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import { DocOverview, NavTab, Playground } from '../../components';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import CodeIcon from '@mui/icons-material/Code';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 
+export interface SidebarItem {
+  path: string;       
+  label: string;     
+  icon: React.ReactNode;
+  component: React.ReactNode;
+}
+
+export interface NavTab {
+  name: string;       
+  path: string;       
+  sidebarItems: SidebarItem[];
+}
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -17,9 +34,84 @@ const Dashboard: React.FC = () => {
     const token = params.get('token');
     if (token) {
       localStorage.setItem('accessToken', token);
-      navigate('/dashboard');
+      navigate('/main/dashboard/overview');
     }
   }, [location.search, navigate]);
+
+  const navTabs: NavTab[] = [
+    {
+      name: 'Dashboard',
+      path: '/main/dashboard',
+      sidebarItems: [
+        {
+          path: '/main/dashboard/overview',
+          label: 'Overview',
+          icon: <DashboardIcon />,
+          component: <Box sx={{ margin: 2 }}>Dashboard Overview</Box>
+        },
+        {
+          path: '/main/dashboard/analytics',
+          label: 'Analytics',
+          icon: <DashboardIcon />,
+          component: <Box sx={{ margin: 2 }}>Analytics Content</Box>
+        }
+      ]
+    },
+    {
+      name: 'Playground',
+      path: '/main/playground',
+      sidebarItems: [
+        {
+          path: '/main/playground/code',
+          label: 'Prompts',
+          icon: <ChatBubbleOutlineIcon />,
+          component: <Playground />
+        },
+        {
+          path: '/main/playground/compare',
+          label: 'Compare',
+          icon: <CompareArrowsIcon />,
+          component: <Box sx={{ margin: 2 }}>Compare Section</Box>
+        }
+      ]
+    },
+    {
+      name: 'Docs',
+      path: '/main/docs',
+      sidebarItems: [
+        {
+          path: '/main/docs/overview',
+          label: 'Overview',
+          icon: <CodeIcon />,
+          component: <DocOverview />
+        },
+        {
+          path: '/main/docs/quickstart',
+          label: 'Quick Start',
+          icon: <SummarizeIcon />,
+          component: <Box sx={{ margin: 2 }}>Quick Start Docs</Box>
+        }
+      ]
+    },
+    {
+      name: 'API reference',
+      path: '/main/api',
+      sidebarItems: [
+        {
+          path: '/main/api/overview',
+          label: 'Overview',
+          icon: <CompareArrowsIcon />,
+          component: <Box sx={{ margin: 2 }}>API Overview</Box>
+        },
+        {
+          path: '/main/api/quickstart',
+          label: 'Quick Start',
+          icon: <CompareArrowsIcon />,
+          component: <Box sx={{ margin: 2 }}>Quick Start API</Box>
+        }
+      ]
+    }
+  ];
 
   return (
     <Box
@@ -29,11 +121,7 @@ const Dashboard: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <NavTab>
-        <SingleTab path="Dashboard" component={<DashboardTab />} />
-        <SingleTab path="Playground" component={<PlaygroundTab />} />
-        <SingleTab path="Compare" component={<CompareTab />} />
-      </NavTab>
+      <NavTab navTabs={navTabs} />
     </Box>
   );
 };

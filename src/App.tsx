@@ -1,7 +1,8 @@
 import type React from 'react';
+import { AppProvider } from './context/context';
 import { Auth, Dashboard, Landing } from './pages';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppProvider } from './context/context';
+import { Main } from './components';
 
 const App: React.FC = () => {
   return (
@@ -10,7 +11,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='/signin' element={<Auth />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/main/*' element={<Dashboard />} />
+          <Route path='/nav' element={<Main />} />
         </Routes>
       </AppProvider>
     </BrowserRouter>

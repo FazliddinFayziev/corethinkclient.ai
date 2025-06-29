@@ -18,3 +18,9 @@ export { default as SingleTab } from "./dashboard/SingleTag";
 export { default as CompareTab } from "./compare/CompareTab";
 export { default as DashboardTab } from "./dashboard/DashboardTab";
 export { default as PlaygroundTab } from "./playground/PlaygroundTab";
+
+// =========================== DOCS ==========================================================>
+export { default as DocOverview } from "./docs/Overview";
+
+export { default as Playground } from "./playground/Playground";
+export { default as Main } from "./main/Main";
