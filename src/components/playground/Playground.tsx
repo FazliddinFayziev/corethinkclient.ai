@@ -4,16 +4,13 @@ import {
     Typography,
     IconButton,
     TextField,
-    Select,
     MenuItem,
-    Slider,
     Tooltip,
     Button,
     Menu,
     Modal
 } from '@mui/material';
 import {
-    Send,
     Edit,
     Add as AddIcon,
     MoreVert,
@@ -23,8 +20,9 @@ import {
 import { FONTS } from '../../styles/GlobalStyles';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { InfoOutlined as InfoOutlinedIcon } from '@mui/icons-material';
 import { useGlobalContext } from '../../context/context';
+import InputArea from './InputArea';
+import SettingsPanel from './SettingsPanel';
 
 interface Message {
     role: string;
@@ -58,11 +56,6 @@ const getTextColor = (mode: boolean): string => {
 
 const getIconColor = (mode: boolean): string => {
     return mode ? '#AAAABB' : '#888888';
-};
-
-const getSendButtonColor = (mode: boolean, disabled: boolean): string => {
-    if (disabled) return mode ? '#666' : '#999';
-    return mode ? '#939BF9' : '#4E3C91';
 };
 
 const Playground: React.FC = () => {
@@ -411,11 +404,11 @@ const Playground: React.FC = () => {
 
                 {/* Input Area */}
                 <InputArea
-                    input={input}
-                    setInput={setInput}
-                    onSend={handleSend}
-                    onKeyDown={handleKeyDown}
                     mode={mode}
+                    input={input}
+                    onSend={handleSend}
+                    setInput={setInput}
+                    onKeyDown={handleKeyDown}
                 />
             </Box>
 
@@ -446,169 +439,6 @@ const Playground: React.FC = () => {
                     />
                 </Box>
             </Modal>
-        </Box>
-    );
-};
-
-interface SettingsPanelProps {
-    model: string;
-    safety: string;
-    temperature: number;
-    outputLength: number;
-    setModel: (value: string) => void;
-    setSafety: (value: string) => void;
-    setTemperature: (value: number) => void;
-    setOutputLength: (value: number) => void;
-    mode: boolean;
-}
-
-const SettingsPanel: React.FC<SettingsPanelProps> = ({
-    model,
-    safety,
-    setModel,
-    setSafety,
-    temperature,
-    outputLength,
-    setTemperature,
-    setOutputLength,
-    mode
-}) => {
-    const getTextColor = (mode: boolean): string => mode ? '#e0e0e0' : '#333333';
-    const getIconColor = (mode: boolean): string => mode ? '#AAAABB' : '#888888';
-
-    return (
-        <Box>
-            <Typography sx={{
-                fontFamily: FONTS.third,
-                color: getTextColor(mode),
-                fontWeight: 500,
-                mb: 2,
-                fontSize: '1.2rem'
-            }}>
-                Model Settings
-            </Typography>
-
-            <Typography sx={{
-                fontFamily: FONTS.third,
-                color: getTextColor(mode),
-                mb: 1,
-            }}>
-                Model
-            </Typography>
-            <TextField
-                select
-                fullWidth
-                size="small"
-                value={model}
-                sx={{
-                    mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                        color: getTextColor(mode),
-                        fontFamily: FONTS.third,
-                    }
-                }}
-                onChange={(e) => setModel(e.target.value)}
-                variant="outlined"
-            >
-                {MODELS.map((modelOption) => (
-                    <MenuItem
-                        key={modelOption}
-                        value={modelOption}
-                        sx={{ fontFamily: FONTS.third }}
-                    >
-                        {modelOption}
-                    </MenuItem>
-                ))}
-            </TextField>
-
-            <Box sx={{ mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Typography sx={{
-                        fontFamily: FONTS.third,
-                        color: getTextColor(mode),
-                        mr: 1
-                    }}>
-                        Output Length
-                    </Typography>
-                    <InfoOutlinedIcon fontSize="small" sx={{ color: getIconColor(mode) }} />
-                </Box>
-                <Slider
-                    min={1}
-                    max={100}
-                    value={outputLength}
-                    sx={{ color: '#4E3C91' }}
-                    onChange={(_, val) => setOutputLength(val as number)}
-                />
-                <Typography sx={{
-                    fontFamily: FONTS.third,
-                    color: getIconColor(mode),
-                    textAlign: 'right',
-                    fontSize: '0.8rem'
-                }}>
-                    {outputLength}
-                </Typography>
-            </Box>
-
-            <Box sx={{ mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Typography sx={{
-                        fontFamily: FONTS.third,
-                        color: getTextColor(mode),
-                        mr: 1
-                    }}>
-                        Temperature
-                    </Typography>
-                    <InfoOutlinedIcon fontSize="small" sx={{ color: getIconColor(mode) }} />
-                </Box>
-                <Slider
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={temperature}
-                    sx={{ color: '#4E3C91' }}
-                    onChange={(_, val) => setTemperature(val as number)}
-                />
-                <Typography sx={{
-                    fontFamily: FONTS.third,
-                    color: getIconColor(mode),
-                    textAlign: 'right',
-                    fontSize: '0.8rem'
-                }}>
-                    {temperature.toFixed(2)}
-                </Typography>
-            </Box>
-
-            <Typography sx={{
-                fontFamily: FONTS.third,
-                color: getTextColor(mode),
-                mb: 1,
-            }}>
-                Safety Model
-            </Typography>
-            <Select
-                value={safety}
-                fullWidth
-                size="small"
-                sx={{
-                    mb: 2,
-                    '& .MuiOutlinedInput-root': {
-                        color: getTextColor(mode),
-                        fontFamily: FONTS.third,
-                    }
-                }}
-                onChange={(e) => setSafety(e.target.value)}
-                variant="outlined"
-            >
-                {SAFETY_MODELS.map((safetyOption) => (
-                    <MenuItem
-                        key={safetyOption}
-                        value={safetyOption}
-                        sx={{ fontFamily: FONTS.third }}
-                    >
-                        {safetyOption}
-                    </MenuItem>
-                ))}
-            </Select>
         </Box>
     );
 };
@@ -720,69 +550,6 @@ const MessageList: React.FC<MessageListProps> = ({
                 </Box>
             ))}
             <div ref={messagesEndRef} />
-        </Box>
-    );
-};
-
-interface InputAreaProps {
-    input: string;
-    setInput: (value: string) => void;
-    onSend: () => void;
-    onKeyDown: (e: React.KeyboardEvent) => void;
-    mode: boolean;
-}
-
-const InputArea: React.FC<InputAreaProps> = ({
-    input,
-    setInput,
-    onSend,
-    onKeyDown,
-    mode
-}) => {
-    return (
-        <Box sx={{
-            p: 2,
-            borderTop: `1px solid ${getMessageBorderColor(mode)}`,
-            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-        }}>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                borderRadius: '8px',
-                backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                border: `1px solid ${getMessageBorderColor(mode)}`,
-                p: '4px 12px'
-            }}>
-                <TextField
-                    multiline
-                    maxRows={4}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    placeholder="Message CoreThink..."
-                    fullWidth
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            border: 'none',
-                            '& fieldset': { border: 'none' },
-                            '&:hover fieldset': { border: 'none' },
-                            '&.Mui-focused fieldset': { border: 'none' },
-                            fontFamily: FONTS.third,
-                            color: getTextColor(mode)
-                        },
-                    }}
-                />
-                <IconButton
-                    onClick={onSend}
-                    disabled={input.trim() === ''}
-                    sx={{
-                        color: getSendButtonColor(mode, input.trim() === ''),
-                        ml: 1
-                    }}
-                >
-                    <Send sx={{ color: "#888888" }} />
-                </IconButton>
-            </Box>
         </Box>
     );
 };
