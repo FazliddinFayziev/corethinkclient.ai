@@ -23,6 +23,12 @@ export const getSendButtonColor = (mode: boolean, disabled: boolean): string => 
     return mode ? '#939BF9' : '#4E3C91';
 };
 
+const getMessageColor = (role: string, mode: boolean): string => {
+    return role === 'user'
+        ? (mode ? '#4E3C91' : '#4E3C91')
+        : (mode ? '#939BF9' : '#4E3C91');
+};
+
 export const styles = (mode: boolean) => {
     return {
 
@@ -74,10 +80,10 @@ export const styles = (mode: boolean) => {
             }
         },
         outputCon: { mb: 2 },
-        outputBox: { 
+        outputBox: {
             mb: 1,
-            display: 'flex', 
-            alignItems: 'center', 
+            display: 'flex',
+            alignItems: 'center',
         },
         outputText: {
             fontFamily: FONTS.third,
@@ -91,9 +97,9 @@ export const styles = (mode: boolean) => {
             fontSize: '0.8rem',
         },
         tempCon: { mb: 2 },
-        tempBox: { 
-            display: 'flex', 
-            alignItems: 'center', 
+        tempBox: {
+            display: 'flex',
+            alignItems: 'center',
             mb: 1,
         },
         tempText: {
@@ -120,5 +126,239 @@ export const styles = (mode: boolean) => {
             }
         },
 
+        // ================= EMPTY STATE ==================>
+
+        emptyCon: {
+            display: 'flex',
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: mode ? '#666666' : '#999999',
+            textAlign: 'center',
+            flexDirection: 'column',
+            gap: '16px'
+        },
+
+        // ================= MESSAGE LISTING ==================>
+
+        messageCon: {
+            gap: 2,
+            display: 'flex',
+            flexDirection: 'column',
+        },
+        messagetypoBox: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 1
+        },
+        editIconB: { color: getIconColor(mode) },
+        messageMarkdownS: {
+            background: 'none',
+            padding: 0,
+            margin: 0,
+            fontSize: '0.9rem',
+            fontFamily: FONTS.third,
+            color: getTextColor(mode)
+        },
+
     }
-}
+};
+
+export const messageListStyle = (message: any, mode: boolean) => {
+    return {
+        messageBox: {
+            p: 2,
+            borderRadius: '8px',
+            backgroundColor: getMessageBackgroundColor(message.role, mode),
+            border: `1px solid ${getMessageBorderColor(mode)}`,
+            maxWidth: '800px',
+            marginLeft: message.role === 'user' ? 'auto' : '0',
+            marginRight: message.role === 'user' ? '0' : 'auto',
+            position: 'relative'
+        },
+        contextS: {
+            fontWeight: 600,
+            fontFamily: FONTS.third,
+            color: getMessageColor(message.role, mode)
+        },
+    };
+};
+
+export const p_styles = (mode: boolean) => {
+    return {
+        // ========================= PLAYGROUND ================================>
+
+        mainPlaygroundCon: {
+            display: 'flex',
+            height: '100%',
+            width: '100%',
+            backgroundColor: mode ? '#121212' : '#f5f5f5',
+            color: getTextColor(mode),
+            fontFamily: FONTS.third,
+        },
+
+        // ========================== CHAT =====================================>
+
+        mainChatCon: {
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            overflow: 'hidden'
+        },
+
+        // ========================== TOP-NAV ==============================>
+
+        topNavS: {
+            p: 2,
+            borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+        navTitleBox: { display: 'flex', alignItems: 'center', gap: 1 },
+        navTitle: {
+            textTransform: 'none',
+            color: getTextColor(mode),
+            fontFamily: FONTS.third,
+        },
+        navRightBox: { display: 'flex', alignItems: 'center', gap: 1 },
+        saveS: {
+            textTransform: 'none',
+            backgroundColor: '#4E3C91',
+            fontFamily: FONTS.third,
+            '&:hover': {
+                backgroundColor: '#5a4a99',
+            },
+        },
+        navMenuS: {
+            sx: {
+                backgroundColor: mode ? '#2d2d2d' : '#ffffff',
+            }
+        },
+        menuItemS: {
+            color: getTextColor(mode),
+            fontFamily: FONTS.third,
+        },
+        navTypoIcon: {
+            color: getIconColor(mode),
+            fontSize: '1.4rem'
+        },
+
+        // ============================ CHAT SECTION =============================>
+
+        chatSectionS: {
+            flex: 1,
+            overflowY: 'auto',
+            p: 2,
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            '&::-webkit-scrollbar': {
+                width: '6px',
+            },
+            '&::-webkit-scrollbar-track': {
+                background: 'transparent',
+            },
+            '&::-webkit-scrollbar-thumb': {
+                backgroundColor: mode ? '#444' : '#ddd',
+                borderRadius: '3px',
+                '&:hover': {
+                    backgroundColor: mode ? '#555' : '#ccc',
+                }
+            },
+        },
+
+        // ======================== SETTINGS ========================================>
+
+        settingsCon: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '300px',
+            minWidth: '300px',
+            borderRight: `1px solid ${getMessageBorderColor(mode)}`,
+        },
+        modelCon: {
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
+            px: 2,
+            py: 1.5,
+        },
+        modelBox: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 1,
+        },
+        modelTypo: {
+            fontFamily: FONTS.third,
+            color: getIconColor(mode),
+            fontWeight: 500,
+        },
+        modelIcon: { color: getIconColor(mode) },
+        modelS: {
+            fontFamily: FONTS.third,
+            fontSize: '0.875rem',
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            borderRadius: '6px',
+            px: 1,
+            py: 0.5,
+            color: getTextColor(mode),
+            mb: 1,
+        },
+        controlCon: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '0.75rem',
+            color: mode ? '#ccc' : '#555',
+            gap: 1.5
+        },
+        controlTypo: { 
+            fontSize: '0.65rem', 
+            color: getIconColor(mode), 
+            fontFamily: FONTS.third 
+        },
+        variableBox: {
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
+        },
+        variableTypo: {
+            fontFamily: FONTS.third,
+            color: getIconColor(mode),
+            fontWeight: 500,
+        },
+        createBox: { display: 'flex', alignItems: 'center', gap: 0.5 },
+        createTypo: {
+            fontFamily: FONTS.third,
+            fontSize: '0.8rem',
+            color: getIconColor(mode),
+            cursor: "pointer",
+        },
+        addIconS: {
+            fontSize: '1rem',
+            color: getIconColor(mode),
+            cursor: 'pointer'
+        },
+        systemBox: {
+            p: 2,
+            backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+            flex: 1,
+        },
+        systemTypo: {
+            fontFamily: FONTS.third,
+            color: getIconColor(mode),
+            fontWeight: 500,
+            mb: 1,
+        },
+        sysMessage: {
+            '& .MuiInputBase-root': {
+                backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
+                color: getTextColor(mode),
+                fontFamily: FONTS.third,
+                fontSize: '0.8rem',
+            }
+        },
+    }
+};

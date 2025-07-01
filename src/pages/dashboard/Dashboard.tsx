@@ -66,12 +66,6 @@ const Dashboard: React.FC = () => {
           label: 'Prompts',
           icon: <ChatBubbleOutlineIcon />,
           component: <Playground />
-        },
-        {
-          path: '/main/playground/compare',
-          label: 'Compare',
-          icon: <CompareArrowsIcon />,
-          component: <Box sx={{ margin: 2 }}>Compare Section</Box>
         }
       ]
     },

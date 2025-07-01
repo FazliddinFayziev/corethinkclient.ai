@@ -17,7 +17,6 @@ export { default as NavTab } from "./navTab/NavTab";
 export { default as SingleTab } from "./dashboard/SingleTag";
 export { default as CompareTab } from "./compare/CompareTab";
 export { default as DashboardTab } from "./dashboard/DashboardTab";
-export { default as PlaygroundTab } from "./playground/PlaygroundTab";
 
 // =========================== DOCS ==========================================================>
 export { default as DocOverview } from "./docs/Overview";

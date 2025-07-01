@@ -1,65 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-    Box,
-    Typography,
-    IconButton,
-    TextField,
-    MenuItem,
-    Tooltip,
-    Button,
-    Menu,
-    Modal
-} from '@mui/material';
-import {
-    Edit,
-    Add as AddIcon,
-    MoreVert,
-    CompareArrows,
-    Tune as TuneIcon
-} from '@mui/icons-material';
-import { FONTS } from '../../styles/GlobalStyles';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { useGlobalContext } from '../../context/context';
+import TopNav from './TopNav';
+import Settings from './Settings';
 import InputArea from './InputArea';
+import { p_styles } from './Styles';
+import type { Message } from './type';
+import ChatSection from './ChatSection';
+import { Box, Modal } from '@mui/material';
 import SettingsPanel from './SettingsPanel';
-
-interface Message {
-    role: string;
-    content: string;
-    id: string;
-    isEditing?: boolean;
-}
-
-const MODELS = [
-    'deepseek-ai/DeepSeek-R1',
-    'openchat/openchat-3.5',
-    'gpt-4o'
-];
-
-const SAFETY_MODELS = ['None', 'OpenAI', 'Anthropic'];
+import { MODELS, SAFETY_MODELS } from './data';
+import { useGlobalContext } from '../../context/context';
 
 // Helper functions for consistent styling
-const getMessageBackgroundColor = (role: string, mode: boolean): string => {
-    return role === 'user'
-        ? (mode ? '#1e1e1e' : '#f0f0f0')
-        : (mode ? '#1e1e1e' : '#f8f8f8');
-};
-
-const getMessageBorderColor = (mode: boolean): string => {
-    return mode ? '#333' : '#e0e0e0';
-};
-
-const getTextColor = (mode: boolean): string => {
-    return mode ? '#e0e0e0' : '#333333';
-};
-
-const getIconColor = (mode: boolean): string => {
-    return mode ? '#AAAABB' : '#888888';
-};
+const getMessageBorderColor = (mode: boolean): string => mode ? '#333' : '#e0e0e0';
 
 const Playground: React.FC = () => {
     const { mode } = useGlobalContext();
+    const [compareMode, setCompareMode] = useState(false);
+
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [model, setModel] = useState(MODELS[0]);
@@ -142,414 +99,141 @@ const Playground: React.FC = () => {
     };
 
     const toggleSettings = () => setSettingsOpen(!settingsOpen);
+    const toggleCompare = () => setCompareMode(!compareMode);
 
-    return (
-        <Box sx={{
-            display: 'flex',
-            height: '100%',
-            width: '100%',
-            backgroundColor: mode ? '#121212' : '#f5f5f5',
-            color: getTextColor(mode),
-            fontFamily: FONTS.third,
-        }}>
-            {/* Left Panel - Configuration */}
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '300px',
-                minWidth: '300px',
-                borderRight: `1px solid ${getMessageBorderColor(mode)}`,
-            }}>
-                {/* Model Configuration */}
-                <Box sx={{
-                    backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                    borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
-                    px: 2,
-                    py: 1.5,
-                }}>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        mb: 1,
-                    }}>
-                        <Typography variant="subtitle2" sx={{
-                            fontFamily: FONTS.third,
-                            color: getIconColor(mode),
-                            fontWeight: 500,
-                        }}>
-                            Model
-                        </Typography>
-                        <IconButton
-                            size="small"
-                            onClick={toggleSettings}
-                            sx={{ color: getIconColor(mode) }}
-                        >
-                            <TuneIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
+    const renderRightPanel = () => (
+        <Box sx={p_styles(mode).mainChatCon}>
+            {/* Nav Area */}
+            <TopNav
+                mode={mode}
+                anchorEl={anchorEl}
+                compareMode={compareMode}
+                toggleCompare={toggleCompare}
+                handleMenuOpen={handleMenuOpen}
+                handleMenuClose={handleMenuClose}
+            />
 
-                    <Box sx={{
-                        fontFamily: FONTS.third,
-                        fontSize: '0.875rem',
-                        backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                        borderRadius: '6px',
-                        px: 1,
-                        py: 0.5,
-                        color: getTextColor(mode),
-                        mb: 1,
-                    }}>
-                        {model}
-                    </Box>
+            {/* Chat Area */}
+            <ChatSection
+                mode={mode}
+                model={model}
+                messages={messages}
+                compare={compareMode}
+                messagesEndRef={messagesEndRef}
+                handleEditMessage={handleEditMessage}
+            />
 
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        fontSize: '0.75rem',
-                        color: mode ? '#ccc' : '#555',
-                        gap: 1.5
-                    }}>
-                        <Typography variant="body2" sx={{ fontSize: '0.65rem', color: getIconColor(mode), fontFamily: FONTS.third }}>
-                            temp: <span style={{ color: '#00c080' }}>{temperature.toFixed(2)}</span>
-                        </Typography>
-                        <Typography variant="body2" sx={{ fontSize: '0.65rem', color: getIconColor(mode), fontFamily: FONTS.third }}>
-                            length: <span style={{ color: '#00c080' }}>{outputLength}</span>
-                        </Typography>
-                        <Typography variant="body2" sx={{ fontSize: '0.65rem', color: getIconColor(mode), fontFamily: FONTS.third }}>
-                            safety: <span style={{ color: '#00c080' }}>{safety}</span>
-                        </Typography>
-                    </Box>
-                </Box>
+            {/* Input Area */}
+            <InputArea
+                mode={mode}
+                input={input}
+                onSend={handleSend}
+                setInput={setInput}
+                onKeyDown={handleKeyDown}
+            />
+        </Box>
+    );
 
-                {/* Variables Section */}
-                <Box sx={{
-                    p: 2,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                    borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
-                }}>
-                    <Typography variant="subtitle2" sx={{
-                        fontFamily: FONTS.third,
-                        color: getIconColor(mode),
-                        fontWeight: 500,
-                    }}>
-                        Variables
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Typography sx={{
-                            fontFamily: FONTS.third,
-                            fontSize: '0.8rem',
-                            color: getIconColor(mode),
-                            cursor: "pointer",
-                        }}>
-                            Create
-                        </Typography>
-                        <AddIcon sx={{
-                            fontSize: '1rem',
-                            color: getIconColor(mode),
-                            cursor: 'pointer'
-                        }} />
-                    </Box>
-                </Box>
 
-                {/* System Message */}
-                <Box sx={{
-                    p: 2,
-                    backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                    flex: 1,
-                }}>
-                    <Typography variant="subtitle2" sx={{
-                        fontFamily: FONTS.third,
-                        color: getIconColor(mode),
-                        fontWeight: 500,
-                        mb: 1,
-                    }}>
-                        System Message
-                    </Typography>
-                    <TextField
-                        multiline
-                        rows={4}
-                        fullWidth
-                        placeholder='Describe desired model behavior'
-                        value={systemMessage}
-                        onChange={(e) => setSystemMessage(e.target.value)}
-                        size="small"
-                        sx={{
-                            '& .MuiInputBase-root': {
-                                backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                                color: getTextColor(mode),
-                                fontFamily: FONTS.third,
-                                fontSize: '0.8rem',
-                            }
-                        }}
-                    />
-                </Box>
-            </Box>
+    const renderCompareStateReander = () => (
+        <Box sx={p_styles(mode).mainChatCon}>
+            {/* Nav Area */}
+            <TopNav
+                mode={mode}
+                anchorEl={anchorEl}
+                compareMode={compareMode}
+                toggleCompare={toggleCompare}
+                handleMenuOpen={handleMenuOpen}
+                handleMenuClose={handleMenuClose}
+            />
 
-            {/* Right Panel - Chat */}
             <Box sx={{
                 flex: 1,
+                overflowY: 'auto',
                 display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                overflow: 'hidden'
+                gap: 1,
+                px: 1,
+                pb: 1,
             }}>
-                {/* Top Navigation */}
-                <Box sx={{
-                    p: 2,
-                    borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Button
-                            startIcon={<AddIcon sx={{ color: getIconColor(mode) }} />}
-                            sx={{
-                                textTransform: 'none',
-                                color: getTextColor(mode),
-                                fontFamily: FONTS.third,
-                            }}
-                        >
-                            New prompt
-                        </Button>
-                        <Typography variant="body2" sx={{
-                            color: getIconColor(mode),
-                            fontFamily: FONTS.third,
-                        }}>
-                            Draft
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Tooltip title="Compare">
-                            <IconButton sx={{ color: getIconColor(mode) }}>
-                                <CompareArrows fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                textTransform: 'none',
-                                backgroundColor: '#4E3C91',
-                                fontFamily: FONTS.third,
-                                '&:hover': {
-                                    backgroundColor: '#5a4a99',
-                                },
-                            }}
-                        >
-                            Save
-                        </Button>
-                        <IconButton onClick={handleMenuOpen} sx={{ color: getIconColor(mode) }}>
-                            <MoreVert />
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={handleMenuClose}
-                            PaperProps={{
-                                sx: {
-                                    backgroundColor: mode ? '#2d2d2d' : '#ffffff',
-                                }
-                            }}
-                        >
-                            <MenuItem onClick={handleMenuClose} sx={{
-                                color: getTextColor(mode),
-                                fontFamily: FONTS.third,
-                            }}>
-                                Optimize
-                            </MenuItem>
-                            <MenuItem onClick={handleMenuClose} sx={{
-                                color: getTextColor(mode),
-                                fontFamily: FONTS.third,
-                            }}>
-                                Evaluate
-                            </MenuItem>
-                        </Menu>
-                    </Box>
-                </Box>
-
-                {/* Chat Area */}
-                <Box sx={{
-                    flex: 1,
-                    overflowY: 'auto',
-                    p: 2,
-                    backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
-                    '&::-webkit-scrollbar': {
-                        width: '6px',
-                    },
-                    '&::-webkit-scrollbar-track': {
-                        background: 'transparent',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: mode ? '#444' : '#ddd',
-                        borderRadius: '3px',
-                        '&:hover': {
-                            backgroundColor: mode ? '#555' : '#ccc',
-                        }
-                    },
-                }}>
-                    {messages.length === 0 ? (
-                        <EmptyState mode={mode} />
-                    ) : (
-                        <MessageList
-                            messages={messages}
-                            mode={mode}
-                            model={model}
-                            onEditMessage={handleEditMessage}
-                            messagesEndRef={messagesEndRef}
-                        />
-                    )}
-                </Box>
-
-                {/* Input Area */}
-                <InputArea
+                <ChatSection
                     mode={mode}
-                    input={input}
-                    onSend={handleSend}
-                    setInput={setInput}
-                    onKeyDown={handleKeyDown}
+                    model={model}
+                    modelID='A'
+                    messages={messages}
+                    compare={compareMode}
+                    messagesEndRef={messagesEndRef}
+                    handleEditMessage={handleEditMessage}
+                />
+
+                <ChatSection
+                    mode={mode}
+                    model={model}
+                    modelID='B'
+                    messages={messages}
+                    compare={compareMode}
+                    messagesEndRef={messagesEndRef}
+                    handleEditMessage={handleEditMessage}
                 />
             </Box>
 
-            {/* Settings Modal */}
-            <Modal open={settingsOpen} onClose={toggleSettings} sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <Box sx={{
-                    backgroundColor: mode ? '#1e1e1e' : '#ffffff',
-                    border: `1px solid ${getMessageBorderColor(mode)}`,
-                    borderRadius: '8px',
-                    width: '400px',
-                    p: 3,
-                    outline: 'none'
-                }}>
-                    <SettingsPanel
-                        model={model}
-                        safety={safety}
-                        temperature={temperature}
-                        outputLength={outputLength}
-                        setModel={setModel}
-                        setSafety={setSafety}
-                        setTemperature={setTemperature}
-                        setOutputLength={setOutputLength}
-                        mode={mode}
-                    />
-                </Box>
-            </Modal>
+            {/* Input Area */}
+            <InputArea
+                mode={mode}
+                input={input}
+                onSend={handleSend}
+                setInput={setInput}
+                onKeyDown={handleKeyDown}
+            />
         </Box>
     );
-};
 
-interface EmptyStateProps {
-    mode: boolean;
-}
 
-const EmptyState: React.FC<EmptyStateProps> = ({ mode }) => {
-    return (
-        <Box sx={{
+
+    const renderSettingsModal = () => (
+        <Modal open={settingsOpen} onClose={toggleSettings} sx={{
             display: 'flex',
-            height: '100%',
             alignItems: 'center',
             justifyContent: 'center',
-            color: mode ? '#666666' : '#999999',
-            textAlign: 'center',
-            flexDirection: 'column',
-            gap: '16px'
         }}>
-            <Typography variant="h6" sx={{ fontFamily: FONTS.third }}>
-                Your conversation will appear here
-            </Typography>
-            <Typography variant="body2" sx={{ fontFamily: FONTS.third }}>
-                Start by typing a message below.
-            </Typography>
-        </Box>
+            <Box sx={{
+                backgroundColor: mode ? '#1e1e1e' : '#ffffff',
+                border: `1px solid ${getMessageBorderColor(mode)}`,
+                borderRadius: '8px',
+                width: '400px',
+                p: 3,
+                outline: 'none'
+            }}>
+                <SettingsPanel
+                    model={model}
+                    safety={safety}
+                    temperature={temperature}
+                    outputLength={outputLength}
+                    setModel={setModel}
+                    setSafety={setSafety}
+                    setTemperature={setTemperature}
+                    setOutputLength={setOutputLength}
+                    mode={mode}
+                />
+            </Box>
+        </Modal>
     );
-};
-
-interface MessageListProps {
-    messages: Message[];
-    mode: boolean;
-    model: string;
-    onEditMessage: (id: string) => void;
-    messagesEndRef: React.RefObject<HTMLDivElement>;
-}
-
-const MessageList: React.FC<MessageListProps> = ({
-    messages,
-    mode,
-    model,
-    onEditMessage,
-    messagesEndRef
-}) => {
-    const getMessageColor = (role: string): string => {
-        return role === 'user'
-            ? (mode ? '#4E3C91' : '#4E3C91')
-            : (mode ? '#939BF9' : '#4E3C91');
-    };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {messages.map((message) => (
-                <Box
-                    key={message.id}
-                    sx={{
-                        p: 2,
-                        borderRadius: '8px',
-                        backgroundColor: getMessageBackgroundColor(message.role, mode),
-                        border: `1px solid ${getMessageBorderColor(mode)}`,
-                        maxWidth: '800px',
-                        marginLeft: message.role === 'user' ? 'auto' : '0',
-                        marginRight: message.role === 'user' ? '0' : 'auto',
-                        position: 'relative'
-                    }}
-                >
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        mb: 1
-                    }}>
-                        <Typography
-                            variant="subtitle2"
-                            sx={{
-                                fontWeight: 600,
-                                fontFamily: FONTS.third,
-                                color: getMessageColor(message.role)
-                            }}
-                        >
-                            {message.role === 'user' ? 'You' : model}
-                        </Typography>
-                        {message.role === 'user' && (
-                            <IconButton
-                                size="small"
-                                onClick={() => onEditMessage(message.id)}
-                                sx={{ color: getIconColor(mode) }}
-                            >
-                                <Edit fontSize="small" />
-                            </IconButton>
-                        )}
-                    </Box>
-                    <SyntaxHighlighter
-                        language="markdown"
-                        style={mode ? atomDark : prism}
-                        wrapLines={true}
-                        customStyle={{
-                            background: 'none',
-                            padding: 0,
-                            margin: 0,
-                            fontSize: '0.9rem',
-                            fontFamily: FONTS.third,
-                            color: getTextColor(mode)
-                        }}
-                    >
-                        {message.content}
-                    </SyntaxHighlighter>
-                </Box>
-            ))}
-            <div ref={messagesEndRef} />
+        <Box sx={p_styles(mode).mainPlaygroundCon}>
+            {!compareMode && (
+                <Settings
+                    mode={mode}
+                    model={model}
+                    safety={safety}
+                    temperature={temperature}
+                    outputLength={outputLength}
+                    systemMessage={systemMessage}
+                    toggleSettings={toggleSettings}
+                    setSystemMessage={setSystemMessage}
+                />
+            )}
+            {compareMode ? renderCompareStateReander() : renderRightPanel()}
+            {renderSettingsModal()}
         </Box>
     );
 };
