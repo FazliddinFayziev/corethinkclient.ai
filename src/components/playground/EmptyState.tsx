@@ -1,23 +1,26 @@
 import React from 'react';
 import { styles } from './Styles';
 import { Box, Typography } from '@mui/material';
-import { FONTS } from '../../styles/GlobalStyles';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 interface EmptyStateProps {
-    mode: boolean;
+  mode: boolean;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ mode }) => {
-    return (
-        <Box sx={styles(mode).emptyCon}>
-            <Typography variant="h6" sx={{ fontFamily: FONTS.third }}>
-                Your conversation will appear here
-            </Typography>
-            <Typography variant="body2" sx={{ fontFamily: FONTS.third }}>
-                Start by typing a message below.
-            </Typography>
-        </Box>
-    );
+  return (
+    <Box sx={styles(mode).emptyCon}>
+      <ChatBubbleOutlineIcon sx={styles(mode).emptyIcon} />
+      <Box>
+        <Typography sx={styles(mode).emptyTitle}>
+          Your conversation will appear here
+        </Typography>
+        <Typography sx={styles(mode).emptySubtitle}>
+          Start by typing a message below.
+        </Typography>
+      </Box>
+    </Box>
+  );
 };
 
 export default EmptyState;

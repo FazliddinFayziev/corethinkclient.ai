@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import { DashboardStyles } from './Styles';
+import CodeIcon from '@mui/icons-material/Code';
 import { useGlobalContext } from '../../context/context';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import { DocOverview, NavTab, Playground } from '../../components';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import CodeIcon from '@mui/icons-material/Code';
-import SummarizeIcon from '@mui/icons-material/Summarize';
+import { DocOverview, Logs, NavTab, Playground } from '../../components';
 
 export interface SidebarItem {
   path: string;       
@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
           path: '/main/dashboard/overview',
           label: 'Overview',
           icon: <DashboardIcon />,
-          component: <Box sx={{ margin: 2 }}>Dashboard Overview</Box>
+          component: <Logs />
         },
         {
           path: '/main/dashboard/analytics',

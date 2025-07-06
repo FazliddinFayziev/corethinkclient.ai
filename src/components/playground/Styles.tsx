@@ -129,20 +129,39 @@ export const styles = (mode: boolean) => {
         // ================= EMPTY STATE ==================>
 
         emptyCon: {
-            display: 'flex',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: mode ? '#666666' : '#999999',
-            textAlign: 'center',
-            flexDirection: 'column',
-            gap: '16px'
-        },
+    display: 'flex',
+    height: '100%',
+    px: 2,
+    py: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: mode ? '#777777' : '#999999',
+    textAlign: 'center',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  emptyIcon: {
+    fontSize: 42,
+    color: mode ? '#555555' : '#bbbbbb',
+  },
+  emptyTitle: {
+    fontFamily: FONTS.third,
+    fontSize: 16,
+    fontWeight: 600,
+    color: mode ? '#cccccc' : '#444444',
+  },
+  emptySubtitle: {
+    fontFamily: FONTS.third,
+    fontSize: 14,
+    mt: 0.5,
+    color: mode ? '#888888' : '#777777',
+  },
 
         // ================= MESSAGE LISTING ==================>
 
         messageCon: {
             gap: 2,
+            p: 2,
             display: 'flex',
             flexDirection: 'column',
         },
@@ -198,6 +217,15 @@ export const p_styles = (mode: boolean) => {
             fontFamily: FONTS.third,
         },
 
+        compareContainer: {
+            flex: 1,
+            overflowY: 'auto',
+            display: 'flex',
+            gap: 1,
+            px: 1,
+            pb: 1,
+        },
+
         // ========================== CHAT =====================================>
 
         mainChatCon: {
@@ -211,39 +239,68 @@ export const p_styles = (mode: boolean) => {
         // ========================== TOP-NAV ==============================>
 
         topNavS: {
-            p: 2,
+            px: 1.5,
+            py: 0.6,
             borderBottom: `1px solid ${getMessageBorderColor(mode)}`,
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
         },
-        navTitleBox: { display: 'flex', alignItems: 'center', gap: 1 },
+        navTitleBox: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+        },
         navTitle: {
             textTransform: 'none',
             color: getTextColor(mode),
             fontFamily: FONTS.third,
+            fontSize: 13,
+            fontWeight: 600,
         },
-        navRightBox: { display: 'flex', alignItems: 'center', gap: 1 },
-        saveS: {
-            textTransform: 'none',
-            backgroundColor: '#4E3C91',
-            fontFamily: FONTS.third,
+        navRightBox: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.8,
+        },
+        navIconButton: {
+            color: getIconColor(mode),
+            p: 0.7,
             '&:hover': {
-                backgroundColor: '#5a4a99',
+                backgroundColor: 'transparent',
             },
         },
         navMenuS: {
             sx: {
                 backgroundColor: mode ? '#2d2d2d' : '#ffffff',
-            }
+                mt: 0.5,
+            },
         },
         menuItemS: {
             color: getTextColor(mode),
             fontFamily: FONTS.third,
+            fontSize: 13,
+            px: 2,
+            py: 0.5,
+        },
+        saveS: {
+            textTransform: 'none',
+            backgroundColor: '#4E3C91',
+            fontFamily: FONTS.third,
+            fontSize: 13,
+            py: 0.3,
+            px: 1.5,
+            minWidth: 'auto',
+            '&:hover': {
+                backgroundColor: '#5a4a99',
+            },
         },
         navTypoIcon: {
             color: getIconColor(mode),
-            fontSize: '1.4rem'
+            fontSize: '1.1rem',
+        },
+        iconColor: {
+            color: getIconColor(mode),
         },
 
         // ============================ CHAT SECTION =============================>
@@ -251,7 +308,6 @@ export const p_styles = (mode: boolean) => {
         chatSectionS: {
             flex: 1,
             overflowY: 'auto',
-            p: 2,
             backgroundColor: mode ? '#1e1e1e' : '#f8f8f8',
             '&::-webkit-scrollbar': {
                 width: '6px',
@@ -266,6 +322,23 @@ export const p_styles = (mode: boolean) => {
                     backgroundColor: mode ? '#555' : '#ccc',
                 }
             },
+        },
+
+        // ======================== MODEL SETTINGS ==================================>
+
+        modelSetingsCon: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+
+        modelSettingsBox: {
+            backgroundColor: mode ? '#1e1e1e' : '#ffffff',
+            border: `1px solid ${getMessageBorderColor(mode)}`,
+            borderRadius: '8px',
+            width: '400px',
+            p: 3,
+            outline: 'none'
         },
 
         // ======================== SETTINGS ========================================>
@@ -312,10 +385,10 @@ export const p_styles = (mode: boolean) => {
             color: mode ? '#ccc' : '#555',
             gap: 1.5
         },
-        controlTypo: { 
-            fontSize: '0.65rem', 
-            color: getIconColor(mode), 
-            fontFamily: FONTS.third 
+        controlTypo: {
+            fontSize: '0.65rem',
+            color: getIconColor(mode),
+            fontFamily: FONTS.third
         },
         variableBox: {
             p: 2,

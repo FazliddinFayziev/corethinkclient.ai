@@ -42,7 +42,7 @@ interface NavTabProps {
   navTabs?: NavTab[];
 }
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 const collapsedWidth = 72;
 
 const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
@@ -405,7 +405,7 @@ const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
             {sidebarOpen && !isMobile && (
               <Typography variant="h6" sx={{ 
                 fontFamily: FONTS.third,
-                fontSize: { sm: '0.8rem', md: '0.9rem' },
+                fontSize: { sm: '0.7rem', md: '0.9rem' },
                 color: primaryTextColor,
                 fontWeight: 600
               }}>
@@ -418,7 +418,7 @@ const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
             flex: 1, 
             overflow: 'hidden',
             '&:hover': { overflow: 'auto' },
-            py: 1,
+            py: 0.5,
             ...scrollbarStyles
           }}>
             <List>
@@ -460,8 +460,8 @@ const NavTab: React.FC<NavTabProps> = ({ navTabs = [] }) => {
                           overflow: 'hidden', 
                           textOverflow: 'ellipsis',
                           fontWeight: isActive ? 500 : 400,
-                          fontSize: 'inherit',
-                          fontFamily: FONTS.third
+                          fontFamily: FONTS.third,
+                          fontSize: '0.75rem',
                         }}>
                           {item.label}
                         </Typography>

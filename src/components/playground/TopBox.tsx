@@ -1,12 +1,20 @@
 import React from 'react';
-import { Box, TextField } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
+import CloseIcon from '@mui/icons-material/Close';
+import TuneIcon from '@mui/icons-material/Tune';
+import { Box, IconButton, TextField, Tooltip } from '@mui/material';
+
+const modelShortNames: Record<string, string> = {
+  'deepseek-ai/DeepSeek-R1': 'DeepSeek',
+  'openchat/openchat-3.5': 'OpenChat 3.5',
+  'gpt-4o': 'GPT-4o',
+};
 
 interface TopBoxProps {
   mode: boolean;
   id: 'A' | 'B';
   model: string;
   systemMessage: string;
+  toggleCompare: () => void;
   setSystemMessage: (msg: string) => void;
 }
 
@@ -15,6 +23,7 @@ const TopBox: React.FC<TopBoxProps> = ({
   id,
   model,
   systemMessage,
+  toggleCompare,
   setSystemMessage,
 }) => {
   const isA = id === 'A';
@@ -28,52 +37,92 @@ const TopBox: React.FC<TopBoxProps> = ({
         top: 0,
         zIndex: 10,
         borderBottom: `1px solid ${mode ? '#333' : '#ccc'}`,
-        backgroundColor: mode ? '#1e1e1e' : '#fafafa',
-        px: 1.5,
+        backgroundColor: mode ? '#1e1e1e' : '#f9f9f9',
+        px: 1,
         py: 1,
       }}
     >
-      {/* Top Row: Label + Model */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-        {/* A / B Label */}
-        <Box
-          sx={{
-            backgroundColor: color,
-            color: textColor,
-            fontWeight: 600,
-            fontSize: 12,
-            px: 1,
-            py: 0.3,
-            borderRadius: '8px 0 0 8px',
-            minWidth: 18,
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          {id}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+          mb: 0.5,
+        }}
+      >
+        {/* Label + Model + Tune */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.1 }}>
+          {/* ID Label */}
+          <Box
+            sx={{
+              backgroundColor: color,
+              color: textColor,
+              fontWeight: 600,
+              fontSize: 11,
+              px: 0.7,
+              py: 0.2,
+              borderRadius: '6px 0 0 6px',
+              minWidth: 16,
+              textAlign: 'center',
+            }}
+          >
+            {id}
+          </Box>
+
+          {/* Model Name */}
+          <Tooltip title={model} arrow placement="top">
+            <Box
+              sx={{
+                backgroundColor: color,
+                color: textColor,
+                fontWeight: 500,
+                fontSize: 11,
+                px: 0.7,
+                py: 0.2,
+                borderRadius: 0,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                maxWidth: 70,
+              }}
+            >
+              {modelShortNames[model] || model.split(" ")[0]}
+            </Box>
+          </Tooltip>
+
+          {/* Tune Icon */}
+          <Box
+            sx={{
+              backgroundColor: color,
+              color: textColor,
+              px: 0.6,
+              py: 0.2,
+              borderRadius: '0 6px 6px 0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <TuneIcon sx={{ fontSize: 15.5 }} />
+          </Box>
         </Box>
 
-        {/* Model Name + Settings */}
-        <Box
+        {/* Close Button */}
+        <IconButton
+          onClick={toggleCompare}
+          size="small"
           sx={{
-            backgroundColor: color,
-            color: textColor,
-            fontWeight: 500,
-            fontSize: 12,
-            px: 1,
-            py: 0.3,
-            borderRadius: '0 8px 8px 0',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 0.5,
+            p: 0.5,
+            color: mode ? '#fff' : '#000',
+            '&:hover': { backgroundColor: 'transparent' },
           }}
         >
-          {model}
-          <SettingsIcon sx={{ fontSize: 15 }} />
-        </Box>
+          <CloseIcon sx={{ fontSize: 16 }} />
+        </IconButton>
       </Box>
 
-      {/* System Message Input */}
+      {/* System Prompt Input */}
       <TextField
         value={systemMessage}
         onChange={(e) => setSystemMessage(e.target.value)}
@@ -84,17 +133,19 @@ const TopBox: React.FC<TopBoxProps> = ({
         variant="outlined"
         size="small"
         sx={{
-          fontSize: 12,
           '& .MuiInputBase-root': {
-            borderRadius: 2,
+            borderRadius: 1,
             backgroundColor: mode ? '#2a2a2a' : '#fff',
             color: mode ? '#fff' : '#000',
+            fontSize: 12,
+            px: 1,
+            py: 0.5,
           },
           '& textarea': {
-            fontSize: 12,
             fontFamily: 'Dosis',
-            lineHeight: 1.4,
-            padding: '6px',
+            fontSize: 12,
+            lineHeight: 1.3,
+            padding: '4px 6px',
           },
         }}
       />

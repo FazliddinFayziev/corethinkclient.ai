@@ -14,6 +14,7 @@ interface ChatSectionProp {
     messages: Message[];
     messagesEndRef: any;
     handleEditMessage: any;
+    toggleCompare: () => void;
 };
 
 const ChatSection: React.FC<ChatSectionProp> = ({
@@ -22,6 +23,7 @@ const ChatSection: React.FC<ChatSectionProp> = ({
     modelID,
     messages,
     compare,
+    toggleCompare,
     messagesEndRef,
     handleEditMessage,
 }) => {
@@ -34,6 +36,7 @@ const ChatSection: React.FC<ChatSectionProp> = ({
                     mode={mode}
                     id={modelID || "A"}
                     model={model}
+                    toggleCompare={toggleCompare}
                     systemMessage={systemMessageA}
                     setSystemMessage={setSystemMessageA}
                 />

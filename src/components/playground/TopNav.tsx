@@ -1,59 +1,88 @@
 import React from 'react';
 import { p_styles } from './Styles';
-import { MoreVert, CompareArrows, Chat } from '@mui/icons-material'; 
-import { Box, Typography, IconButton, MenuItem, Tooltip, Button, Menu } from '@mui/material';
+import {
+  MoreVert,
+  CompareArrows,
+  Chat
+} from '@mui/icons-material';
+import {
+  Box,
+  Typography,
+  IconButton,
+  MenuItem,
+  Tooltip,
+  Button,
+  Menu
+} from '@mui/material';
 
 interface TopNavProp {
-    anchorEl: any;
-    mode: boolean;
-    handleMenuOpen: any;
-    compareMode: boolean;
-    toggleCompare: () => void;
-    handleMenuClose: () => void;
-};
-
-const getIconColor = (mode: boolean): string => mode ? '#AAAABB' : '#888888';
+  anchorEl: any;
+  mode: boolean;
+  handleMenuOpen: any;
+  handleMenuClose: any;
+  compareMode: boolean;
+  toggleCompare: () => void;
+}
 
 const TopNav: React.FC<TopNavProp> = ({
-    mode,
-    anchorEl,
-    compareMode,
-    toggleCompare,
-    handleMenuOpen,
-    handleMenuClose,
+  mode,
+  anchorEl,
+  compareMode,
+  toggleCompare,
+  handleMenuOpen,
+  handleMenuClose,
 }) => {
-    return (
-        <Box sx={p_styles(mode).topNavS}>
-            <Box sx={p_styles(mode).navTitleBox}>
-                {compareMode ? (<CompareArrows sx={p_styles(mode).navTypoIcon} />) : (
-                    <Chat sx={p_styles(mode).navTypoIcon} />
-                )}
-                <Typography sx={p_styles(mode).navTitle}>
-                    {compareMode ? "Compare Prompts" : "Chat Playground"}
-                </Typography>
-            </Box>
-            <Box sx={p_styles(mode).navRightBox}>
-                <Tooltip title="Compare">
-                    <IconButton onClick={toggleCompare} sx={{ color: getIconColor(mode) }}>
-                        <CompareArrows sx={{ color: compareMode ? '#4E3C91' : getIconColor(mode) }} fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                <Button variant="contained" sx={p_styles(mode).saveS}>Save</Button>
-                <IconButton onClick={handleMenuOpen} sx={{ color: getIconColor(mode) }}>
-                    <MoreVert />
-                </IconButton>
-                <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                    PaperProps={p_styles(mode).navMenuS}
-                >
-                    <MenuItem onClick={handleMenuClose} sx={p_styles(mode).menuItemS}>Optimize</MenuItem>
-                    <MenuItem onClick={handleMenuClose} sx={p_styles(mode).menuItemS}>Evaluate</MenuItem>
-                </Menu>
-            </Box>
-        </Box>
-    );
+  const styles = p_styles(mode);
+
+  return (
+    <Box sx={styles.topNavS}>
+      <Box sx={styles.navTitleBox}>
+        {compareMode ? (
+          <CompareArrows sx={styles.navTypoIcon} />
+        ) : (
+          <Chat sx={styles.navTypoIcon} />
+        )}
+        <Typography sx={styles.navTitle}>
+          {compareMode ? 'Compare Prompts' : 'Chat Playground'}
+        </Typography>
+      </Box>
+
+      <Box sx={styles.navRightBox}>
+        <Tooltip title="Compare">
+          <IconButton onClick={toggleCompare} sx={styles.navIconButton}>
+            <CompareArrows
+              fontSize="small"
+              sx={{
+                color: compareMode ? '#4E3C91' : styles.iconColor?.color,
+              }}
+            />
+          </IconButton>
+        </Tooltip>
+
+        <Button variant="contained" sx={styles.saveS}>
+          Save
+        </Button>
+
+        <IconButton onClick={handleMenuOpen} sx={styles.navIconButton}>
+          <MoreVert />
+        </IconButton>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          PaperProps={styles.navMenuS}
+        >
+          <MenuItem onClick={handleMenuClose} sx={styles.menuItemS}>
+            Optimize
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose} sx={styles.menuItemS}>
+            Evaluate
+          </MenuItem>
+        </Menu>
+      </Box>
+    </Box>
+  );
 };
 
 export default TopNav;

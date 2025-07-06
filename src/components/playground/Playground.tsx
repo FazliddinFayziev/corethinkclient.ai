@@ -10,9 +10,6 @@ import SettingsPanel from './SettingsPanel';
 import { MODELS, SAFETY_MODELS } from './data';
 import { useGlobalContext } from '../../context/context';
 
-// Helper functions for consistent styling
-const getMessageBorderColor = (mode: boolean): string => mode ? '#333' : '#e0e0e0';
-
 const Playground: React.FC = () => {
     const { mode } = useGlobalContext();
     const [compareMode, setCompareMode] = useState(false);
@@ -103,117 +100,30 @@ const Playground: React.FC = () => {
 
     const renderRightPanel = () => (
         <Box sx={p_styles(mode).mainChatCon}>
-            {/* Nav Area */}
-            <TopNav
-                mode={mode}
-                anchorEl={anchorEl}
-                compareMode={compareMode}
-                toggleCompare={toggleCompare}
-                handleMenuOpen={handleMenuOpen}
-                handleMenuClose={handleMenuClose}
-            />
-
-            {/* Chat Area */}
-            <ChatSection
-                mode={mode}
-                model={model}
-                messages={messages}
-                compare={compareMode}
-                messagesEndRef={messagesEndRef}
-                handleEditMessage={handleEditMessage}
-            />
-
-            {/* Input Area */}
-            <InputArea
-                mode={mode}
-                input={input}
-                onSend={handleSend}
-                setInput={setInput}
-                onKeyDown={handleKeyDown}
-            />
+            <TopNav {...{ mode, anchorEl, compareMode, toggleCompare, handleMenuClose, handleMenuOpen }} />
+            <ChatSection {...{ mode, model, messages, compare: compareMode, messagesEndRef, handleEditMessage, toggleCompare }} />
+            <InputArea {...{ mode, input, onSend: handleSend, setInput, onKeyDown: handleKeyDown }} />
         </Box>
     );
 
 
     const renderCompareStateReander = () => (
         <Box sx={p_styles(mode).mainChatCon}>
-            {/* Nav Area */}
-            <TopNav
-                mode={mode}
-                anchorEl={anchorEl}
-                compareMode={compareMode}
-                toggleCompare={toggleCompare}
-                handleMenuOpen={handleMenuOpen}
-                handleMenuClose={handleMenuClose}
-            />
-
-            <Box sx={{
-                flex: 1,
-                overflowY: 'auto',
-                display: 'flex',
-                gap: 1,
-                px: 1,
-                pb: 1,
-            }}>
-                <ChatSection
-                    mode={mode}
-                    model={model}
-                    modelID='A'
-                    messages={messages}
-                    compare={compareMode}
-                    messagesEndRef={messagesEndRef}
-                    handleEditMessage={handleEditMessage}
-                />
-
-                <ChatSection
-                    mode={mode}
-                    model={model}
-                    modelID='B'
-                    messages={messages}
-                    compare={compareMode}
-                    messagesEndRef={messagesEndRef}
-                    handleEditMessage={handleEditMessage}
-                />
+            <TopNav {...{ mode, anchorEl, compareMode, toggleCompare, handleMenuClose, handleMenuOpen }} />
+            <Box sx={p_styles(mode).compareContainer}>
+                <ChatSection {...{ mode, model, modelID: 'A', messages, compare: compareMode, messagesEndRef, handleEditMessage, toggleCompare }} />
+                <ChatSection {...{ mode, model, modelID: 'B', messages, compare: compareMode, messagesEndRef, handleEditMessage, toggleCompare }} />
             </Box>
-
-            {/* Input Area */}
-            <InputArea
-                mode={mode}
-                input={input}
-                onSend={handleSend}
-                setInput={setInput}
-                onKeyDown={handleKeyDown}
-            />
+            <InputArea {...{ mode, input, onSend: handleSend, setInput, onKeyDown: handleKeyDown }} />
         </Box>
     );
 
 
 
     const renderSettingsModal = () => (
-        <Modal open={settingsOpen} onClose={toggleSettings} sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            <Box sx={{
-                backgroundColor: mode ? '#1e1e1e' : '#ffffff',
-                border: `1px solid ${getMessageBorderColor(mode)}`,
-                borderRadius: '8px',
-                width: '400px',
-                p: 3,
-                outline: 'none'
-            }}>
-                <SettingsPanel
-                    model={model}
-                    safety={safety}
-                    temperature={temperature}
-                    outputLength={outputLength}
-                    setModel={setModel}
-                    setSafety={setSafety}
-                    setTemperature={setTemperature}
-                    setOutputLength={setOutputLength}
-                    mode={mode}
-                />
+        <Modal open={settingsOpen} onClose={toggleSettings} sx={p_styles(mode).modelSetingsCon}>
+            <Box sx={p_styles(mode).modelSettingsBox}>
+                <SettingsPanel {...{ mode, model, safety, temperature, outputLength, setModel, setSafety, setTemperature, setOutputLength }} />
             </Box>
         </Modal>
     );
@@ -221,16 +131,7 @@ const Playground: React.FC = () => {
     return (
         <Box sx={p_styles(mode).mainPlaygroundCon}>
             {!compareMode && (
-                <Settings
-                    mode={mode}
-                    model={model}
-                    safety={safety}
-                    temperature={temperature}
-                    outputLength={outputLength}
-                    systemMessage={systemMessage}
-                    toggleSettings={toggleSettings}
-                    setSystemMessage={setSystemMessage}
-                />
+                <Settings {...{ mode, model, safety, temperature, outputLength, systemMessage, toggleSettings, setSystemMessage }} />
             )}
             {compareMode ? renderCompareStateReander() : renderRightPanel()}
             {renderSettingsModal()}

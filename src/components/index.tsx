@@ -14,7 +14,6 @@ export { default as Benchmark } from "./benchmark/Benchmark";
 // ========================== TABS (MAIN DASHBOARD SECTION) ===================================>
 
 export { default as NavTab } from "./navTab/NavTab";
-export { default as SingleTab } from "./dashboard/SingleTag";
 export { default as CompareTab } from "./compare/CompareTab";
 export { default as DashboardTab } from "./dashboard/DashboardTab";
 
@@ -23,3 +22,4 @@ export { default as DocOverview } from "./docs/Overview";
 
 export { default as Playground } from "./playground/Playground";
 export { default as Main } from "./main/Main";
+export { default as Logs } from "./logs/Logs";
